@@ -1,4 +1,6 @@
+#go_game_gui_main.py
 import pygame
+import os
 import sys
 import time
 from go_game_constants import (BOARD_SIZE, BLACK, WHITE, EMPTY, PLAYER_COLOR, AI_COLOR, CELL_SIZE, BOARD_PADDING,
@@ -55,7 +57,7 @@ def draw_board(screen, board):
 
 
 def draw_sidebar(screen, current_player, black_score=0, white_score=0, player_time_left=0, ai_time_left=0):
-    sidebar_x = BOARD_PADDING * 2 + CELL_SIZE * BOARD_SIZE
+    sidebar_x = BOARD_PADDING + CELL_SIZE * 13 + BOARD_PADDING
     pygame.draw.rect(screen, (230, 230, 230), (sidebar_x, 0, SIDEBAR_WIDTH, WINDOW_HEIGHT))
 
     info_lines = [
@@ -80,9 +82,10 @@ def draw_sidebar(screen, current_player, black_score=0, white_score=0, player_ti
 
 def color_selection_screen(screen):
     # Add UI elements for player to choose color
-    screen.fill(BG_COLOR)
+    screen.blit(background_image, (0, 0))
 
-    text = font.render("Choose your color:", True, TEXT_COLOR)
+    large_font = pygame.font.SysFont("Arial", 40)
+    text = large_font.render("Choose your color", True, TEXT_COLOR_W)
     screen.blit(text, (WINDOW_WIDTH // 2 - text.get_width() // 2, 100))
 
     black_button = pygame.Rect(WINDOW_WIDTH // 2 - 100, 200, 200, 50)
@@ -115,15 +118,18 @@ def color_selection_screen(screen):
 
     return selected_color
 
+background_image = pygame.image.load("background.jpg")  # or .png
+background_image = pygame.transform.scale(background_image, (WINDOW_WIDTH, WINDOW_HEIGHT))
+
 
 def main():
     global pass_history  # Declare pass_history as global to modify it inside this function
-
+    
     # Initialize pass_history as an empty list at the start
     pass_history = []
 
     screen = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
-    pygame.display.set_caption("Go Game (9x9)")
+    pygame.display.set_caption(f"Go Game {BOARD_SIZE}x{BOARD_SIZE}")
 
     # Color selection screen
     PLAYER_COLOR = color_selection_screen(screen)

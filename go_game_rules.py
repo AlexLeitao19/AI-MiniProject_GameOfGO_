@@ -1,3 +1,4 @@
+#go_game_rules.py
 from go_game_constants import BOARD_SIZE, EMPTY, BLACK, WHITE
 
 
